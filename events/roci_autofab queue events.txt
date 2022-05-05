@@ -12,8 +12,6 @@ event = {
 	immediate = {
 		every_country = {
 			limit = {
-				NOT = { has_global_flag = no_autofab }
-				can_use_autofab = yes
 				OR = {
 					has_autofab_queue = yes
 					check_variable = { which = autofab_alloy_debt value > 0 }
@@ -49,7 +47,7 @@ country_event = {
 	hide_window = yes
 	
 	trigger = {
-		NOT = { has_global_flag = no_autofab }
+		can_use_autofab = yes
 	}
 	
 	immediate = {
@@ -65,6 +63,10 @@ country_event = {
 				has_global_flag = autofab_logging
 			}
 			log = "Autofab Queue for [This.GetName]"
+		}
+
+		every_owned_planet = {
+			planet_event = { id = autofab_queue.8 }
 		}
 	}
 }
@@ -149,7 +151,10 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		NOT = { has_global_flag = no_autofab }
+		OR = {
+			check_variable = { which = autofab_queue value > 0 }
+			has_autofab = yes
+		}
 	}
 	
 	immediate = {

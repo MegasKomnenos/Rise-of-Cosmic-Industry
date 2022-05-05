@@ -31,7 +31,6 @@ on_yearly_pulse = {
 		
 		autofab_automation.0
 		autofab.30
-		autofab_queue.0
 	}
 }
 on_yearly_pulse_country = {
@@ -58,6 +57,8 @@ on_monthly_pulse_country = {
 		spaceexploitAI.11
 		
 		realdev.92
+
+		autofab_queue.1
 	}
 }
 
