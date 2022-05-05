@@ -311,16 +311,8 @@ document_factory_country = {
 	change_variable = { which = autofab_districts_queued value = autofab_crystals_queue }
 	change_variable = { which = autofab_districts_queued value = autofab_extractor_queue }
 	
-	change_variable = { which = autofab_districts_queued value = autofab_energy_building }
-	change_variable = { which = autofab_districts_queued value = autofab_minerals_building }
-	change_variable = { which = autofab_districts_queued value = autofab_food_building }
-	change_variable = { which = autofab_districts_queued value = autofab_alloys_building }
-	change_variable = { which = autofab_districts_queued value = autofab_congoods_building }
-	change_variable = { which = autofab_districts_queued value = autofab_motes_building }
-	change_variable = { which = autofab_districts_queued value = autofab_gases_building }
-	change_variable = { which = autofab_districts_queued value = autofab_crystals_building }
-	change_variable = { which = autofab_districts_queued value = autofab_extractor_building }
 	subtract_variable = { which = autofab_districts_available value = autofab_districts_queued }
+	subtract_variable = { which = autofab_districts_available value = autofab_districts_building }
 	
 	subtract_variable = { which = autofabs_available value = autofab_queue }
 	
