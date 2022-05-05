@@ -236,15 +236,17 @@ document_factory_country = {
 	set_variable = { which = autofab_refinery value = 0 }
 	set_variable = { which = autofab_chemical value = 0 }
 	set_variable = { which = autofab_translucer value = 0 }
+	set_variable = { which = autofab_extractor value = 0 }
 	
-	set_variable = { which = autofab_farm_queue value = 0 }
-	set_variable = { which = autofab_mine_queue value = 0 }
-	set_variable = { which = autofab_power_queue value = 0 }
-	set_variable = { which = autofab_foundry_queue value = 0 }
-	set_variable = { which = autofab_factory_queue value = 0 }
-	set_variable = { which = autofab_refinery_queue value = 0 }
-	set_variable = { which = autofab_motes_building_queue value = 0 }
-	set_variable = { which = autofab_translucer_queue value = 0 }
+	set_variable = { which = autofab_food_queue value = 0 }
+	set_variable = { which = autofab_mineral_queue value = 0 }
+	set_variable = { which = autofab_energy_queue value = 0 }
+	set_variable = { which = autofab_alloys_queue value = 0 }
+	set_variable = { which = autofab_congoods_queue value = 0 }
+	set_variable = { which = autofab_gases_queue value = 0 }
+	set_variable = { which = autofab_motes_queue value = 0 }
+	set_variable = { which = autofab_crystals_queue value = 0 }
+	set_variable = { which = autofab_extractor_queue value = 0 }
 	every_owned_planet = {
 		document_factory_planet = yes
 		PREV = {
