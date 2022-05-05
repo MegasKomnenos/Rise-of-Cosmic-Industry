@@ -202,6 +202,7 @@ reset_variables = {
 	set_variable = { which = autofab_districts_queued value = 0 }
 	set_variable = { which = autofabs_available value = 0 }
 	set_variable = { which = autofabs_building value = 0 }
+	set_variable = { which = autofab_queue value = 0 }
 	set_variable = { which = autofab_districts_available value = 0 }
 	set_variable = { which = autofab_districts_building value = 0 }
 	
@@ -253,6 +254,7 @@ document_factory_country = {
 			change_variable = { which = autofabs_available value = PREV.autofabs_available }
 			change_variable = { which = autofabs_building value = PREV.autofabs_building }
 			change_variable = { which = autofabs value = PREV.autofabs }
+			change_variable = { which = autofab_queue value = PREV.autofab_queue }
 			change_variable = { which = autofab_power value = PREV.autofab_power }
 			change_variable = { which = autofab_mine value = PREV.autofab_mine }
 			change_variable = { which = autofab_farm value = PREV.autofab_farm }
