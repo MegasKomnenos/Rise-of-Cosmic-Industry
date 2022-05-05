@@ -5,13 +5,11 @@ automation_active = {
 		owner = {
 			is_ai = yes
 		}
-		has_planet_flag = autofab_automation
+		has_planet_flag = autofab_automation_off
 		AND = {
+			has_planet_flag = autofab_automation
 			owner = {
 				has_country_flag = autofab_automation
-			}
-			NOT = {
-				has_planet_flag = autofab_automation_off
 			}
 		}
 	}
