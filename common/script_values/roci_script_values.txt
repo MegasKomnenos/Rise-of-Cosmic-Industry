@@ -151,27 +151,27 @@ roci_district_sprawl = {
  	}
 }
 
-roci_autofab_modules = {
+roci_autofab_districts = {
 	base = 0
 	modifier = {
  		is_variable_set = autofab_energy_queue
 		add = autofab_energy_queue
  	}
 	modifier = {
- 		is_variable_set = autofab_minerals_queue
-		add = autofab_minerals_queue
+ 		is_variable_set = autofab_mineral_queue
+		add = autofab_mineral_queue
  	}
 	modifier = {
  		is_variable_set = autofab_food_queue
 		add = autofab_food_queue
  	}
 	modifier = {
- 		is_variable_set = autofab_foundry_queue
-		add = autofab_foundry_queue
+ 		is_variable_set = autofab_alloys_queue
+		add = autofab_alloys_queue
  	}
 	modifier = {
- 		is_variable_set = autofab_factory_queue
-		add = autofab_factory_queue
+ 		is_variable_set = autofab_congoods_queue
+		add = autofab_congoods_queue
  	}
 	modifier = {
  		is_variable_set = autofab_motes_queue
@@ -191,22 +191,22 @@ roci_autofab_modules = {
  	}
 }
 
-autofab_modules_progress = {
-	base = 30.417
-	multiply = autofab_modules_build_speed
+autofab_module_progress = {
+	base = 30
+	multiply = autofab_module_build_speed
 }
 projected_autofab_construction_time = {
-	add = autofab_modules_construction_time
-	divide = autofab_modules_build_speed
+	add = autofab_module_construction_time
+	multiply = autofab_module_build_speed
 }
 autofab_queue_time = {
 	base = @factory_construction_time
-	multiply = autofab_modules_queue
-	add = autofab_modules_construction_time
+	multiply = autofab_districts_queued
+	add = autofab_module_construction_time
 }
 projected_autofab_queue_time = {
 	add = value:autofab_queue_time
-	multiply = autofab_modules_build_speed
+	multiply = autofab_module_build_speed
 }
 	
 	
@@ -232,44 +232,44 @@ orbital_spaceport_crystals_mult = {
 
 #Autofab UI stuff
 
-roci_autofab_available_modules = {
+roci_autofab_available_districts = {
 	base = 0
 }
 roci_autofab_available_autofab = {
 	base = 0
 }
 
-factory_energy_queue_value = {
+factory_generator_queue_value = {
 	add = autofab_energy_queue
-	add = autofab_energy
+	add = autofab_power
 }
-factory_minerals_queue_value = {
-	add = autofab_minerals_queue
-	add = autofab_minerals
+factory_mine_queue_value = {
+	add = autofab_mineral_queue
+	add = autofab_mine
 }
-factory_food_queue_value = {
+factory_farm_queue_value = {
 	add = autofab_food_queue
-	add = autofab_food
+	add = autofab_farm
 }
 factory_foundry_queue_value = {
-	add = autofab_foundry_queue
+	add = autofab_alloys_queue
 	add = autofab_foundry
 }
 factory_factory_queue_value = {
-	add = autofab_factory_queue
+	add = autofab_congoods_queue
 	add = autofab_factory
 }
 factory_motes_queue_value = {
 	add = autofab_motes_queue
-	add = autofab_motes
+	add = autofab_chemical
 }
 factory_gases_queue_value = {
 	add = autofab_gases_queue
-	add = autofab_gases
+	add = autofab_refinery
 }
 factory_crystals_queue_value = {
 	add = autofab_crystals_queue
-	add = autofab_crystals
+	add = autofab_translucer
 }
 factory_extractor_queue_value = {
 	add = autofab_extractor_queue
@@ -326,7 +326,7 @@ exploit_colony_srs_cost = {
 	base = 0
 }
 
-###Autofab modules Stuff. This = Planet
+###Autofab Module Stuff. This = Planet
 
 autofab_autofab_energy_cost = {
 	base = 300
@@ -338,10 +338,10 @@ autofab_autofab_alloys_cost = {
 	base = 150
 }
 
-autofab_modules_minerals_cost = {
+autofab_module_minerals_cost = {
 	base = 300
 }
-autofab_modules_alloys_cost = {
+autofab_module_alloys_cost = {
 	base = 50
 }
 
