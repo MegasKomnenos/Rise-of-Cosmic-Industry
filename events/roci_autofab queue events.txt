@@ -66,64 +66,6 @@ country_event = {
 			}
 			log = "Autofab Queue for [This.GetName]"
 		}
-		random_list = {
-			10 = {
-				country_event = { id = autofab_queue.10 days = 5 }
-				if = {
-					limit = {
-						has_global_flag = autofab_logging
-					}
-					log = "Autofab Queue 5 day delay for [This.GetName]"
-				}
-			}
-			10 = {
-				country_event = { id = autofab_queue.10 days = 95 }
-				if = {
-					limit = {
-						has_global_flag = autofab_logging
-					}
-					log = "Autofab Queue 95 day delay for [This.GetName]"
-				}
-			}
-			10 = {
-				country_event = { id = autofab_queue.10 days = 185 }
-				if = {
-					limit = {
-						has_global_flag = autofab_logging
-					}
-					log = "Autofab Queue 185 day delay for [This.GetName]"
-				}
-			}
-			10 = {
-				country_event = { id = autofab_queue.10 days = 275 }
-				if = {
-					limit = {
-						has_global_flag = autofab_logging
-					}
-					log = "Autofab Queue 275 day delay for [This.GetName]"
-				}
-			}
-		}
-		every_country = {
-			limit = {
-				is_ai = yes
-				can_use_autofab = yes
-			}
-			random_list = {
-				10 = {
-					country_event = { id = autofab_queue.3 days = 5 }
-				}
-				10 = {
-					country_event = { id = autofab_queue.3 days = 95 }
-				}
-				10 = {
-					country_event = { id = autofab_queue.3 days = 185 }
-				}
-				10 = {
-					country_event = { id = autofab_queue.3 days = 275 }
-				}
-			}
-		}
 	}
 }
 
