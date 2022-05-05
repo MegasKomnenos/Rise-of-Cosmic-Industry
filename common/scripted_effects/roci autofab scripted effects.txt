@@ -80,55 +80,82 @@ set_autofab_variables_initial = {
 set_unset_variables = {
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_power }
+			OR = {
+				NOT = { is_variable_set = autofab_power }
+				check_variable = { which = autofab_power value < 0 }
+			}
 		}
 		set_variable = { which = autofab_power value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_mine }
+			OR = {
+				NOT = { is_variable_set = autofab_mine }
+				check_variable = { which = autofab_mine value < 0 }
+			}
 		}
 		set_variable = { which = autofab_mine value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_farm }
+			OR = {
+				NOT = { is_variable_set = autofab_farm }
+				check_variable = { which = autofab_farm value < 0 }
+			}
 		}
 		set_variable = { which = autofab_farm value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_foundry }
+			OR = {
+				NOT = { is_variable_set = autofab_foundry }
+				check_variable = { which = autofab_foundry value < 0 }
+			}
 		}
 		set_variable = { which = autofab_foundry value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_factory }
+			OR = {
+				NOT = { is_variable_set = autofab_factory }
+				check_variable = { which = autofab_factory value < 0 }
+			}
 		}
 		set_variable = { which = autofab_factory value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_chemical }
+			OR = {
+				NOT = { is_variable_set = autofab_chemical }
+				check_variable = { which = autofab_chemical value < 0 }
+			}
 		}
 		set_variable = { which = autofab_chemical value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_refinery }
+			OR = {
+				NOT = { is_variable_set = autofab_refinery }
+				check_variable = { which = autofab_refinery value < 0 }
+			}
 		}
 		set_variable = { which = autofab_refinery value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_translucer }
+			OR = {
+				NOT = { is_variable_set = autofab_translucer }
+				check_variable = { which = autofab_translucer value < 0 }
+			}
 		}
 		set_variable = { which = autofab_translucer value = 0 }
 	}
 	if = {
 		limit = {
-			NOT = { is_variable_set = autofab_extractor }
+			OR = {
+				NOT = { is_variable_set = autofab_extractor }
+				check_variable = { which = autofab_extractor value < 0 }
+			}
 		}
 		set_variable = { which = autofab_extractor value = 0 }
 	}
