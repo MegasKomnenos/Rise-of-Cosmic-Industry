@@ -1,0 +1,102 @@
+namespace = construct
+
+event = {
+    id = construct.1
+	hide_window = yes
+	is_triggered_only = yes
+
+    trigger = {
+		NOT = { has_global_flag = no_autofab }
+	}
+
+    immediate = {
+        every_country = {
+            every_owned_planet = {
+                limit = {
+                    has_owner = yes
+                }
+                if = {
+                    limit = {
+                        check_variable = { which = autofab_modules_building value > 0 }
+                    }
+                    set_variable = { which = autofab_modules_build_speed value = 0 }
+                    export_modifier_to_variable = { modifier = planet_building_build_speed_mult variable = autofab_modules_build_speed }
+                    change_variable = { which = autofab_modules_build_speed value = 1 }
+
+                    set_variable = { which = autofab_modules_progress value = value:autofab_modules_progress }
+
+                    construct_do = { name = autofabs progress = autofab_modules_progress }
+                    construct_do = { name = energy progress = autofab_modules_progress }
+                    construct_do = { name = minerals progress = autofab_modules_progress }
+                    construct_do = { name = food progress = autofab_modules_progress }
+                    construct_do = { name = foundry progress = autofab_modules_progress }
+                    construct_do = { name = factory progress = autofab_modules_progress }
+                    construct_do = { name = motes progress = autofab_modules_progress }
+                    construct_do = { name = gases progress = autofab_modules_progress }
+                    construct_do = { name = crystals progress = autofab_modules_progress }
+                    construct_do = { name = extractor progress = autofab_modules_progress }
+
+                    set_variable = { which = autofab_modules_construction_time value = 0 }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_autofabs_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_energy_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_minerals_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_food_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_foundry_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_factory_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_motes_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_gases_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_crystals_time }
+                    change_variable = { which = autofab_modules_construction_time value = autofab_extractor_time }
+
+                    set_variable = { which = projected_autofab_construction_time value = value:projected_autofab_construction_time }
+                    set_variable = { which = autofab_queue_time value = value:autofab_queue_time }
+		            set_variable = { which = projected_autofab_queue_time value = value:projected_autofab_queue_time }
+                }
+
+                construct_start_first = { time_build = @factory_construction_time }
+                construct_start = { name = autofabs time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = energy time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = minerals time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = food time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = foundry time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = factory time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = motes time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = gases time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = crystals time_build = @factory_construction_time time_demol = @factory_construction_time }
+                construct_start = { name = extractor time_build = @factory_construction_time time_demol = @factory_construction_time }
+
+                construct_refresh = yes
+            }
+        }
+    }
+}
+
+event = {
+    id = construct.2
+	hide_window = yes
+	is_triggered_only = yes
+
+    trigger = {
+		NOT = { has_global_flag = no_autofab }
+	}
+
+    immediate = {
+        every_country = {
+            every_owned_planet = {
+                limit = {
+                    has_owner = yes
+                }
+                construct_yearly_check = { name = autofabs }
+                construct_yearly_check = { name = energy }
+                construct_yearly_check = { name = minerals }
+                construct_yearly_check = { name = food }
+                construct_yearly_check = { name = foundry }
+                construct_yearly_check = { name = factory }
+                construct_yearly_check = { name = motes }
+                construct_yearly_check = { name = gases }
+                construct_yearly_check = { name = crystals }
+                construct_yearly_check = { name = extractor }
+            }
+        }
+    }
+}

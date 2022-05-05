@@ -1,0 +1,724 @@
+construct_order = {
+    change_variable = { which = autofab_$name$_queue value = $value$ }
+
+    if = {
+        limit = {
+            check_variable_arithmetic = { which = autofab_$name$_queue add = autofab_$name$_building value > autofab_$name$_available }
+        }
+        set_variable = { which = autofab_$name$_queue value = autofab_$name$_available }
+    }
+    else_if = {
+        limit = {
+            check_variable_arithmetic = { which = autofab_$name$_queue add = autofab_$name$_building multiply = -1 value > autofab_$name$ }
+        }
+        set_variable = { which = autofab_$name$_queue value = autofab_$name$ }
+        multiply_variable = { which = autofab_$name$_queue value = -1 }
+    }
+}
+
+construct_queue_add = { construct_order = { name = $name$ value = 1 } }
+construct_queue_subt = { construct_order = { name = $name$ value = -1 } }
+
+construct_queue_add_autofabs = { construct_queue_add = { name = autofabs } }
+construct_queue_subt_autofabs = { construct_queue_subt = { name = autofabs } }
+
+construct_queue_add_energy = { construct_queue_add = { name = energy } }
+construct_queue_subt_energy = { construct_queue_subt = { name = energy } }
+
+construct_queue_add_minerals = { construct_queue_add = { name = minerals } }
+construct_queue_subt_minerals = { construct_queue_subt = { name = minerals } }
+
+construct_queue_add_food = { construct_queue_add = { name = food } }
+construct_queue_subt_food = { construct_queue_subt = { name = food } }
+
+construct_queue_add_foundry = { construct_queue_add = { name = foundry } }
+construct_queue_subt_foundry = { construct_queue_subt = { name = foundry } }
+
+construct_queue_add_factory = { construct_queue_add = { name = factory } }
+construct_queue_subt_factory = { construct_queue_subt = { name = factory } }
+
+construct_queue_add_motes = { construct_queue_add = { name = motes } }
+construct_queue_subt_motes = { construct_queue_subt = { name = motes } }
+
+construct_queue_add_gases = { construct_queue_add = { name = gases } }
+construct_queue_subt_gases = { construct_queue_subt = { name = gases } }
+
+construct_queue_add_crystals = { construct_queue_add = { name = crystals } }
+construct_queue_subt_crystals = { construct_queue_subt = { name = crystals } }
+
+construct_queue_add_extractor = { construct_queue_add = { name = extractor } }
+construct_queue_subt_extractor = { construct_queue_subt = { name = extractor } }
+
+construct_start = {
+    if = {
+        limit = {
+            check_variable = { which = autofab_autofabs_use value < autofab_autofabs }
+
+            NOT = {
+                has_planet_flag = factory_building_$name$
+
+                check_variable = { which = autofab_$name$_queue value = 0 }
+            }
+        }
+        set_planet_flag = factory_building_$name$
+        set_planet_flag = factory_expanding
+        add_modifier = { modifier = factory_expansion }
+
+        change_variable = { which = autofab_autofabs_use value = 1 }
+
+        if = {
+            limit = {
+                check_variable = { which = autofab_$name$_queue value >= 1 }
+            }
+            subtract_variable = { which = autofab_$name$_queue value = 1 }
+            set_variable = { which = autofab_$name$_building value = 1 }
+            set_variable = { which = autofab_$name$_time value = $time_build$ }
+
+            floor_variable = autofab_$name$_queue
+
+            add_deposit = autofab_construction_modules
+
+            pay_for_district = yes
+        }
+        else_if = {
+            limit = {
+                check_variable = { which = autofab_$name$_queue value <= -1 }
+            }
+            change_variable = { which = autofab_$name$_queue value = 1 }
+            set_variable = { which = autofab_$name$_building value = -1 }
+            set_variable = { which = autofab_$name$_time value = $time_demol$ }
+
+            ceiling_variable = autofab_$name$_queue
+        }
+        else = {
+            set_variable = { which = autofab_$name$_queue value = 0 }
+        }
+    }
+}
+construct_start_first = {
+    if = {
+        limit = {
+            check_variable = { which = autofab_autofabs value = 0 }
+            check_variable = { which = autofab_autofabs_available value = 1 }
+
+            NOT = {
+                has_planet_flag = factory_building_autofabs
+
+                check_variable = { which = autofab_autofabs_queue value >= 1 }
+            }
+        }
+        set_planet_flag = factory_building_autofabs
+        set_planet_flag = factory_expanding
+        add_modifier = { modifier = factory_expansion }
+
+        change_variable = { which = autofab_autofabs_use value = 1 }
+
+        subtract_variable = { which = autofab_autofabs_queue value = 1 }
+        set_variable = { which = autofab_autofabs_building value = 1 }
+        set_variable = { which = autofab_autofabs_time value = $time_build$ }
+
+        floor_variable = autofab_autofabs_queue
+
+        add_deposit = autofab_construction_modules
+
+        pay_for_autofab = yes
+
+        if = {
+            limit = {
+                owner = { has_active_tradition = tr_autofab_finish }
+            }
+            divide_variable = { which = autofab_autofabs_time value = 2 }
+        }
+    }
+}
+
+construct_do = {
+    if = {
+        limit = {
+            has_planet_flag = factory_building_$name$
+        }
+        if = {
+            limit = {
+                check_variable = { which = autofab_$name$_time value > 0 }
+            }
+            subtract_variable = { which = autofab_$name$_time value = $progress$ }
+        }
+
+        if = {
+            limit = {
+                check_variable = { which = autofab_$name$_time value <= 0 }
+            }
+            change_variable = { which = autofab_$name$ value = autofab_$name$_building }
+            subtract_variable = { which = autofab_$name$_available value = autofab_$name$_building }
+
+            if = {
+                limit = {
+                    check_variable = { which = autofab_$name$_building value >= 1 }
+                }
+                while = {
+                    limit = {
+                        check_variable = { which = autofab_$name$_building value >= 1 }
+                    }
+                    subtract_variable = { which = autofab_$name$_building value = 1 }
+
+                    add_deposit = autofab_$name$
+                    remove_deposit = autofab_construction_modules
+                    subtract_variable = { which = autofab_autofabs_use value = 1 }
+                }
+            }
+            else_if = {
+                limit = {
+                    check_variable = { which = autofab_$name$_building value <= -1 }
+                }
+                while = {
+                    limit = {
+                        check_variable = { which = autofab_$name$_building value <= -1 }
+                    }
+                    subtract_variable = { which = autofab_$name$_building value = -1 }
+
+                    remove_deposit = autofab_$name$
+                    subtract_variable = { which = autofab_autofabs_use value = 1 }
+                }
+            }
+
+            remove_planet_flag = factory_building_$name$
+
+            set_variable = { which = autofab_$name$_building value = 0 }
+            set_variable = { which = autofab_$name$_time value = 0 }
+        }
+    }
+}
+
+construct_refresh = {
+    set_variable = { which = autofab_autofabs_available value = 0 }
+    set_variable = { which = autofab_energy_available value = 0 }
+	set_variable = { which = autofab_minerals_available value = 0 }
+	set_variable = { which = autofab_food_available value = 0 }
+	set_variable = { which = autofab_foundry_available value = 0 }
+	set_variable = { which = autofab_factory_available value = 0 }
+	set_variable = { which = autofab_motes_available value = 0 }
+	set_variable = { which = autofab_gases_available value = 0 }
+	set_variable = { which = autofab_crystals_available value = 0 }
+	set_variable = { which = autofab_extractor_available value = 0 }
+
+    if = {
+		limit = {
+            OR = {
+				has_planet_flag = has_autofab
+				has_planet_flag = factory_building_autofab
+
+				check_variable = { which = autofab_queue value > 0 }
+
+                owner = {
+                    can_use_autofab = yes
+                }
+            }
+		}
+		set_variable = { which = autofab_autofabs_available value = 1 }
+	}
+
+    if = {
+        limit = {
+            has_rare_resource_deposit = yes
+        }
+        set_variable = { which = autofab_extractor_available value = 1 }
+    }
+
+    export_trigger_value_to_variable = { trigger = free_district_slots variable = autofab_modules_available }
+    switch = {
+        trigger = uses_district_set
+        giga_birch = {
+            set_variable = { which = autofab_modules_available value = 50 }
+            set_variable = { which = autofab_energy_available value = autofab_modules_available }
+            set_variable = { which = autofab_minerals_available value = autofab_modules_available }
+            set_variable = { which = autofab_food_available value = autofab_modules_available }
+            set_variable = { which = autofab_foundry_available value = autofab_modules_available }
+            set_variable = { which = autofab_factory_available value = autofab_modules_available }
+            set_variable = { which = autofab_motes_available value = autofab_modules_available }
+            set_variable = { which = autofab_gases_available value = autofab_modules_available }
+            set_variable = { which = autofab_crystals_available value = autofab_modules_available }
+        }
+        standard = {
+            construct_count_limited_districts = yes
+            if = {
+                limit = {
+                    can_build_fallback_planet = yes
+                }	
+                change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+            }
+            else = {
+                if = {
+                    limit = {
+                        is_alloys_colony = yes
+                    }
+                    change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_congood_colony = yes
+                    }
+                    change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_refinery_colony = yes
+                    }
+                    change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                    change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                    change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+                }
+            }
+        }
+        hive_world = {
+            if = {
+                limit = {
+                    can_build_fallback_planet = yes
+                }
+                change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                change_variable = { which = autofab_minerals_available value = autofab_modules_available }
+                change_variable = { which = autofab_food_available value = autofab_modules_available }
+
+                change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+            }
+            else = {
+                if = {
+                    limit = {
+                        is_energy_colony = yes
+                    }
+                    change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_mining_colony = yes
+                    }
+                    change_variable = { which = autofab_minerals_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_farming_colony = yes
+                    }
+                    change_variable = { which = autofab_food_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_alloys_colony = yes
+                    }
+                    change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_congood_colony = yes
+                    }
+                    change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_refinery_colony = yes
+                    }
+                    change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                    change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                    change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+                }
+            }
+        }
+        machine_world = {
+            if = {
+                limit = {
+                    can_build_fallback_planet = yes
+                }
+                change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                change_variable = { which = autofab_minerals_available value = autofab_modules_available }
+
+                change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+            }
+            else = {
+                if = {
+                    limit = {
+                        is_energy_colony = yes
+                    }
+                    change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_mining_colony = yes
+                    }
+                    change_variable = { which = autofab_minerals_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_alloys_colony = yes
+                    }
+                    change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_congood_colony = yes
+                    }
+                    change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_refinery_colony = yes
+                    }
+                    change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                    change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                    change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+                }
+            }
+        }
+        ring_world = {
+            if = {
+                limit = {
+                    can_build_fallback_planet = yes
+                }
+                change_variable = { which = autofab_food_available value = autofab_modules_available }
+                change_variable = { which = autofab_energy_available value = autofab_modules_available }
+
+                change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+            }
+            else = {
+                if = {
+                    limit = {
+                        is_energy_colony = yes
+                    }
+                    change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_farming_colony = yes
+                    }
+                    change_variable = { which = autofab_food_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_alloys_colony = yes
+                    }
+                    change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_congood_colony = yes
+                    }
+                    change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_refinery_colony = yes
+                    }
+                    change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                    change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                    change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+                }
+            }
+        }
+        habitat = {
+            if = {
+                limit = {
+                    can_build_fallback_planet = yes
+                }
+                if = {
+                    limit = {
+                        OR = {
+                            has_planet_flag = energy_habitat
+                            AND = {
+                                exists = from
+                                from = { is_gestalt = yes }
+                            }
+                        }
+                    }
+                    change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                }
+                if = {
+                    limit = {
+                        has_planet_flag = mining_habitat
+                    }
+                    change_variable = { which = autofab_minerals_available value = autofab_modules_available }
+                }
+
+                change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+            }
+            else = {
+                if = {
+                    limit = {
+                        is_energy_colony = yes
+                        OR = {
+                            has_planet_flag = energy_habitat
+                            AND = {
+                                exists = from
+                                from = { is_gestalt = yes }
+                            }
+                        }
+                    }
+                    change_variable = { which = autofab_energy_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_mining_colony = yes
+                        has_planet_flag = mining_habitat
+                    }
+                    change_variable = { which = autofab_minerals_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_alloys_colony = yes
+                    }
+                    change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_congood_colony = yes
+                    }
+                    change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_refinery_colony = yes
+                    }
+                    change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                    change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                    change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+                }
+            }
+        }
+        city_world = {
+            if = {
+                limit = {
+                    can_build_fallback_planet = yes
+                }
+                change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+            }
+            else = {
+                if = {
+                    limit = {
+                        is_alloys_colony = yes
+                    }
+                    change_variable = { which = autofab_foundry_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_congood_colony = yes
+                    }
+                    change_variable = { which = autofab_factory_available value = autofab_modules_available }
+                }
+                else_if = {
+                    limit = {
+                        is_refinery_colony = yes
+                    }
+                    change_variable = { which = autofab_motes_available value = autofab_modules_available }
+                    change_variable = { which = autofab_gases_available value = autofab_modules_available }
+                    change_variable = { which = autofab_crystals_available value = autofab_modules_available }
+                }
+            }
+        }
+    }
+
+    subtract_variable = { which = autofab_autofabs_available value = autofab_autofabs }
+    subtract_variable = { which = autofab_energy_available value = autofab_energy }
+	subtract_variable = { which = autofab_minerals_available value = autofab_minerals }
+	subtract_variable = { which = autofab_food_available value = autofab_food }
+	subtract_variable = { which = autofab_foundry_available value = autofab_foundry }
+	subtract_variable = { which = autofab_factory_available value = autofab_factory }
+	subtract_variable = { which = autofab_motes_available value = autofab_motes }
+	subtract_variable = { which = autofab_gases_available value = autofab_gases }
+	subtract_variable = { which = autofab_crystals_available value = autofab_crystals }
+	subtract_variable = { which = autofab_extractor_available value = autofab_extractor }
+
+    set_variable = { which = autofab_modules_queue value = 0 }
+    change_variable = { which = autofab_modules_queue value = autofab_autofabs_queue }
+    change_variable = { which = autofab_modules_queue value = autofab_energy_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_minerals_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_food_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_foundry_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_factory_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_motes_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_gases_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_crystals_queue }
+	change_variable = { which = autofab_modules_queue value = autofab_extractor_queue }
+
+    set_variable = { which = autofab_modules_building value = 0 }
+    change_variable = { which = autofab_modules_building value = autofab_autofabs_building }
+    change_variable = { which = autofab_modules_building value = autofab_energy_building }
+	change_variable = { which = autofab_modules_building value = autofab_minerals_building }
+	change_variable = { which = autofab_modules_building value = autofab_food_building }
+	change_variable = { which = autofab_modules_building value = autofab_foundry_building }
+	change_variable = { which = autofab_modules_building value = autofab_factory_building }
+	change_variable = { which = autofab_modules_building value = autofab_motes_building }
+	change_variable = { which = autofab_modules_building value = autofab_gases_building }
+	change_variable = { which = autofab_modules_building value = autofab_crystals_building }
+	change_variable = { which = autofab_modules_building value = autofab_extractor_building }
+
+    set_variable = { which = autofab_modules value = 0 }
+    change_variable = { which = autofab_modules value = autofab_autofabs }
+    change_variable = { which = autofab_modules value = autofab_energy }
+    change_variable = { which = autofab_modules value = autofab_minerals }
+    change_variable = { which = autofab_modules value = autofab_food }
+    change_variable = { which = autofab_modules value = autofab_foundry }
+    change_variable = { which = autofab_modules value = autofab_factory }
+    change_variable = { which = autofab_modules value = autofab_motes }
+    change_variable = { which = autofab_modules value = autofab_gases }
+    change_variable = { which = autofab_modules value = autofab_crystals }
+    change_variable = { which = autofab_modules value = autofab_extractor }
+
+    set_variable = { which = autofab_autofabs_use value = 0 }
+    if = { limit = { check_variable = { which = autofab_autofabs_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_autofabs_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_autofabs_building }}
+    if = { limit = { check_variable = { which = autofab_energy_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_energy_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_energy_building }}
+    if = { limit = { check_variable = { which = autofab_minerals_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_minerals_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_minerals_building }}
+    if = { limit = { check_variable = { which = autofab_food_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_food_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_food_building }}
+    if = { limit = { check_variable = { which = autofab_foundry_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_foundry_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_foundry_building }}
+    if = { limit = { check_variable = { which = autofab_factory_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_factory_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_factory_building }}
+    if = { limit = { check_variable = { which = autofab_motes_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_motes_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_motes_building }}
+    if = { limit = { check_variable = { which = autofab_gases_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_gases_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_gases_building }}
+    if = { limit = { check_variable = { which = autofab_crystals_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_crystals_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_crystals_building }}
+    if = { limit = { check_variable = { which = autofab_extractor_building value > 0 } } change_variable = { which = autofab_autofabs_use value = autofab_extractor_building } } else = { subtract_variable = { which = autofab_autofabs_use value = autofab_extractor_building }}
+    
+    construct_sanity_check = { name = autofabs }
+    construct_sanity_check = { name = energy }
+    construct_sanity_check = { name = minerals }
+    construct_sanity_check = { name = food }
+    construct_sanity_check = { name = foundry }
+    construct_sanity_check = { name = factory }
+    construct_sanity_check = { name = motes }
+    construct_sanity_check = { name = gases }
+    construct_sanity_check = { name = crystals }
+    construct_sanity_check = { name = extractor }
+
+    construct_update_modules_presence = { name = autofabs }
+    construct_update_modules_presence = { name = energy }
+    construct_update_modules_presence = { name = minerals }
+    construct_update_modules_presence = { name = food }
+    construct_update_modules_presence = { name = foundry }
+    construct_update_modules_presence = { name = factory }
+    construct_update_modules_presence = { name = motes }
+    construct_update_modules_presence = { name = gases }
+    construct_update_modules_presence = { name = crystals }
+    construct_update_modules_presence = { name = extractor }
+}
+
+construct_update_modules_presence = {
+    if = {
+        limit = {
+            has_planet_flag = has_$name$
+        }
+        if = {
+            limit = {
+                check_variable = { which = autofab_$name$ value <= 0 }
+            }
+            remove_planet_flag = has_$name$
+        }
+    }
+    else_if = {
+        limit = {
+            check_variable = { which = autofab_$name$ value > 0 }
+        }
+        set_planet_flag = has_$name$
+    }
+}
+
+construct_sanity_check = {
+    if = {
+        limit = {
+            check_variable = { which = autofab_$name$_available value < 0 }
+        }
+        subtract_variable = { which = autofab_$name$ value = autofab_$name$_available }
+
+        floor_variable = autofab_$name$
+
+        if = {
+            limit = {
+                check_variable = { which = autofab_$name$ value <= 0 }
+            }
+            set_variable = { which = autofab_$name$ value = 0 }
+        }
+
+        set_variable = { which = autofab_$name$_available value = 0 }
+
+        construct_refresh_deposit = { name = $name$ }
+    }
+}
+
+construct_refresh_deposit = {
+    while = {
+        limit = {
+            count_deposit = { limit = { is_deposit_type = autofab_$name$ } count > autofab_$name$ }
+        }
+        remove_deposit = autofab_$name$
+    }
+    while = {
+        limit = {
+            count_deposit = { limit = { is_deposit_type = autofab_$name$ } count < autofab_$name$ }
+        }
+        add_deposit = autofab_$name$
+    }
+}
+
+construct_count_limited_districts = {
+	export_trigger_value_to_variable = { trigger = num_free_districts parameters = { type = district_generator } variable = autofab_energy_available }
+	if = {
+		limit = {
+			check_variable = { which = autofab_energy_available value > trigger:free_district_slots }
+		}
+		set_variable = { which = autofab_energy_available value = trigger:free_district_slots }
+	}
+	
+	export_trigger_value_to_variable = { trigger = num_free_districts parameters = { type = district_mining } variable = autofab_minerals_available }
+	if = {
+		limit = {
+			check_variable = { which = autofab_minerals_available value > trigger:free_district_slots }
+		}
+		set_variable = { which = autofab_minerals_available value = trigger:free_district_slots }
+	}
+	
+	export_trigger_value_to_variable = { trigger = num_free_districts parameters = { type = district_farming } variable = autofab_food_available }
+	if = {
+		limit = {
+			check_variable = { which = autofab_food_available value > trigger:free_district_slots }
+		}
+		set_variable = { which = autofab_food_available value = trigger:free_district_slots }
+	}
+}
+
+construct_yearly_check = {
+    if = {
+        limit = {
+            has_planet_flag = factory_building_$name$
+
+            OR = {
+                NOT = {
+                    is_variable_set = autofab_$name$_time
+                }
+
+                check_variable = { which = autofab_$name$_time value <= 0 }
+            }
+        }
+        remove_planet_flag = factory_building_$name$
+
+        set_variable = { which = autofab_$name$_building value = 0 }
+        set_variable = { which = autofab_$name$_time value = 0 }
+    }
+
+    construct_refresh_deposit = { name = $name$ }
+}
